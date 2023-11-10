@@ -3,9 +3,11 @@ import json
 from fractions import Fraction
 import re
 import requests as req
+import os
 
 md_file_url = "https://github.com/dpapathanasiou/recipes/raw/master/index/c/cookies.md"
 json_file_url_prefix = "https://github.com/dpapathanasiou/recipes/raw/master/index"
+file_name = "/data/dataset.json"
 
 response = req.get(md_file_url)
 content = response.text
@@ -63,5 +65,9 @@ for url in json_urls:
   }
   recipes_data["recipes"].append(recipe)
 
-final_json_data = json.dumps(recipes_data,indent=2)
-print(final_json_data)
+with open(file_name, "w") as outfile:
+    json.dump(recipes_data, outfile, indent=2)
+print("Dataset created successfully");
+# final_json_data = json.dumps(recipes_data,indent=2)
+# print(final_json_data)
+
