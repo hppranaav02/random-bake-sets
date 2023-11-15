@@ -7,7 +7,7 @@ import os
 
 md_file_url = "https://github.com/dpapathanasiou/recipes/raw/master/index/c/cookies.md"
 json_file_url_prefix = "https://github.com/dpapathanasiou/recipes/raw/master/index"
-file_name = "/data/dataset.json"
+file_name = "/data/recipes.json"
 
 response = req.get(md_file_url)
 content = response.text
@@ -52,11 +52,18 @@ for url in json_urls:
     match = re.match(pattern, ing)
 
     if match:
-        new_ingr = {
-            "amount": parse_mixed_fraction(match.group(1).strip()),
-            "unit": match.group(2),
-            "ingridient":match.group(3).strip()
-        }
+        if match.group(3).strip() == "":
+            new_ingr = {
+                "amount": parse_mixed_fraction(match.group(1).strip()),
+                "unit": "",
+                "ingridient":match.group(2).strip()
+            }
+        else:
+            new_ingr = {
+                "amount": parse_mixed_fraction(match.group(1).strip()),
+                "unit": match.group(2),
+                "ingridient":match.group(3).strip()
+            }
         final_ingrs.append(new_ingr)
 
   recipe = {
@@ -67,7 +74,7 @@ for url in json_urls:
 
 with open(file_name, "w") as outfile:
     json.dump(recipes_data, outfile, indent=2)
-print("Dataset created successfully");
+print("Dataset created successfully")
 # final_json_data = json.dumps(recipes_data,indent=2)
 # print(final_json_data)
 
